@@ -15,6 +15,12 @@ class API {
   static const String BLOCK = BASE_URL+'/home/fav/0.json';
   //文章详情
   static const String ARTICLE = BASE_URL+'/n/b/article/Friends/1947923.json';
+  //版面
+  static const String BOARD = BASE_URL+'/n/b/home/fav/0.json';
+  static const String BANNER = BASE_URL+'/n/b/banner.json';
+  //banner
+  static const String BOARDS = BASE_URL+'/n/b/section.json';
+
   var _request = HttpRequest.getInstance();
 
   Future<dynamic> _query(String uri) async {

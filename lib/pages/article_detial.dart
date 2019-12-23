@@ -28,6 +28,7 @@ class ArticleDetailState extends State<ArticleDetail> with AutomaticKeepAliveCli
   ScrollController _scrollController = ScrollController();
   bool isPerformingRequest = false;
   final colorList = [Colors.green[400],Colors.blue[400],Colors.lightGreen,Colors.red[400],Colors.indigo,Colors.pink[400],Colors.brown[400],Colors.blueGrey[400],Colors.orange[400],Colors.red[100]];
+  
   @override
   void initState(){
     super.initState();
@@ -38,8 +39,7 @@ class ArticleDetailState extends State<ArticleDetail> with AutomaticKeepAliveCli
       }
     });
   }
-  @override
-  bool get wantKeepAlive => true;
+  
   @override
   Widget build(BuildContext context) {
     // 获取路由参数  
@@ -295,6 +295,13 @@ class ArticleDetailState extends State<ArticleDetail> with AutomaticKeepAliveCli
                       size: 16,
                       color: Colors.grey
                     ),
+                    onPressed: () {
+                      showModalBottomSheet(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return _showNomalWidList(context);
+                        });
+                    },
                   ),
                 ),
                 Text(
@@ -315,7 +322,82 @@ class ArticleDetailState extends State<ArticleDetail> with AutomaticKeepAliveCli
       )
     );
   }
-  
+  Widget _showNomalWid(BuildContext context) {
+    var nameItems = ['选项一','选项二'];
+    return new Container(
+     height: 100.0,
+//      color: Colors.greenAccent,
+      child: new GridView.builder(
+        gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 4, mainAxisSpacing: 5.0, childAspectRatio: 1.0),
+        itemBuilder: (BuildContext context, int index) {
+          return new Column(
+            children: <Widget>[
+              new Padding(
+                padding: EdgeInsets.fromLTRB(0.0, 6.0, 0.0, 6.0),
+                child: new Text('选项'),
+              ),
+              new Text(nameItems[index])
+            ],
+          );
+        },
+        itemCount: nameItems.length,
+      ),
+    );
+  }
+  Widget _showNomalWidList(BuildContext context) {
+    var nameItems = ['赞 1','踩 0','取消'];
+    return Container(
+     height: 163.0,
+//      color: Colors.greenAccent,
+      padding: const EdgeInsets.only(top:4.0),
+      child: Column(
+        children: [
+          Container(
+            height: 40,
+            child: FlatButton(
+              onPressed: () {
+                showModalBottomSheet(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return _showNomalWid(context);
+                    });
+              },
+              child: Text(nameItems[0], style: TextStyle(fontSize:18)),
+            ),
+          ),
+          Divider(),
+          Container(
+            height: 40,
+            child: FlatButton(
+              onPressed: () {
+                showModalBottomSheet(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return _showNomalWid(context);
+                    });
+              },
+              child: Text(nameItems[1], style: TextStyle(fontSize:18)),
+            ),
+          ),
+          Divider(thickness:6,color:Colors.grey[200]),
+          Container(
+            height: 40,
+            child: FlatButton(
+              onPressed: () {
+                showModalBottomSheet(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return _showNomalWid(context);
+                    });
+              },
+              child: Text(nameItems[2], style: TextStyle(fontSize:18)),
+            ),
+          ),
+        ]
+      )
+    );
+  }
   Widget _getArticelDetail(var context,var user) {
     var content = articleDetail[0]['content'];
     var title = articleAll['title'];
@@ -539,6 +621,25 @@ class ArticleDetailState extends State<ArticleDetail> with AutomaticKeepAliveCli
       )
     );
   }
+  Widget _getDialog(){
+    return SimpleDialog(
+      title: Text('选择'),
+      children: <Widget>[
+          SimpleDialogOption(
+              child: Text('选项 1'),
+              onPressed: () {
+                  Navigator.of(context).pop();
+              },
+          ),
+          SimpleDialogOption(
+              child: Text('选项 2'),
+              onPressed: () {
+                  Navigator.of(context).pop();
+              },
+          ),
+      ],
+    );
+  }
   _getMoreData() async {
     if (!isPerformingRequest) {
       setState(() => isPerformingRequest = true);
@@ -579,4 +680,6 @@ class ArticleDetailState extends State<ArticleDetail> with AutomaticKeepAliveCli
       isPerformingRequest = false;
     });
   }
+  @override
+  bool get wantKeepAlive => true;
 }

@@ -1,0 +1,56 @@
+{
+  "success": true,
+  "data": {
+    "parent": -1,
+    "boards": [
+      {
+        "name": "",
+        "desc": "助学之家",
+        "dir": true,
+        "pos": 0,
+        "new": 0,
+        "level": 1
+      },
+      {
+        "name": "Feeling",
+        "desc": "情感的天空",
+        "dir": false,
+        "pos": 63,
+        "new": 17,
+        "level": 64
+      },
+      {
+        "name": "Friends",
+        "desc": "缘来如此",
+        "dir": false,
+        "pos": 65,
+        "new": 9,
+        "level": 66
+      },
+      {
+        "name": "JobInfo",
+        "desc": "招聘信息专版",
+        "dir": false,
+        "pos": 371,
+        "new": 3,
+        "level": 372
+      },
+      {
+        "name": "Picture",
+        "desc": "贴图秀",
+        "dir": false,
+        "pos": 71,
+        "new": 0,
+        "level": 72
+      },
+      {
+        "name": "Talking",
+        "desc": "谈天说地",
+        "dir": false,
+        "pos": 67,
+        "new": 19,
+        "level": 68
+      }
+    ]
+  }
+}

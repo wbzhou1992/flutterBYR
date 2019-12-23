@@ -3,6 +3,7 @@ import 'package:flutterdemo/model/topten.dart';
 import 'package:flutterdemo/api/API.dart';
 import 'package:flutterdemo/pages/topten_list.dart';
 import 'package:flutterdemo/pages/timeline.dart';
+import 'package:flutterdemo/pages/board.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -14,17 +15,13 @@ class HomePage extends StatefulWidget {
 class HomePageState extends State<HomePage> with SingleTickerProviderStateMixin {
   TabController _tabController;
   final List<String> _tabs = ['时间线','今日十大','收藏版面'];
+  
   @override
   void initState(){
     super.initState();
     _tabController = TabController(vsync: this, length: 3);
   }
 
-  @override
-  void dispose(){
-    _tabController.dispose();
-    super.dispose();
-  }
   void _pushSaved() {
 
   }
@@ -38,7 +35,7 @@ class HomePageState extends State<HomePage> with SingleTickerProviderStateMixin 
         children: <Widget>[
           Center(child: Timeline()),
           Center(child: ToptenList()),
-          Center(child: Text('汽车')),
+          Center(child: Boardsection()),
         ]
       ),
       floatingActionButton: FloatingActionButton(
@@ -46,6 +43,7 @@ class HomePageState extends State<HomePage> with SingleTickerProviderStateMixin 
         child: Icon(Icons.add),
         onPressed: null,
       ),
+      backgroundColor: Colors.white,
     );
   }
   _getAppBar() {

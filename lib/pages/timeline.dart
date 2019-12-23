@@ -16,8 +16,7 @@ class TimelineState extends State<Timeline>  with AutomaticKeepAliveClientMixin{
   var lists = [];
   ScrollController _scrollController = ScrollController();
   bool isPerformingRequest = false;
-  @override
-  bool get wantKeepAlive => true;
+  
   @override
   void initState() {
     super.initState();
@@ -28,7 +27,6 @@ class TimelineState extends State<Timeline>  with AutomaticKeepAliveClientMixin{
       }
     });
   }
-  @override
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +66,7 @@ class TimelineState extends State<Timeline>  with AutomaticKeepAliveClientMixin{
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  // _getUsesrView(index + 1,bean),
+                  _getBoard(index + 1,bean),
                   _getContentView(bean),
                   index != lists.length-1 ? Divider() : Text('')
                 ],
@@ -95,48 +93,39 @@ class TimelineState extends State<Timeline>  with AutomaticKeepAliveClientMixin{
       ),
     );
   }
-  Widget _getUsesrView(var no, var article) {
-    var board = article['board'].substring(0,1);
-    var user = article['user']['id'];
+  Widget _getBoard(var no, var article) {
+    var board = article['board_description'];
+    var time = article['post_time'].toString();
     var colorList = [Colors.green[400],Colors.blue[400],Colors.lightGreen,Colors.red[400],Colors.grey[400],Colors.pink[400],Colors.brown[400],Colors.blueGrey[400],Colors.orange[400],Colors.red[100],Colors.indigo];
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-          Container(
-            child:Center(
-              child:Text(
-                board,
-                style: TextStyle(color: Colors.white),
-              ),
+        Container(
+            child:Text(
+              board,
+              style: TextStyle(color: Colors.white),
             ),
             decoration: BoxDecoration(
                 color: Colors.blue,
-                shape: BoxShape.circle,
+                shape: BoxShape.rectangle,
+                borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10.0), bottomRight: Radius.circular(10.0)),
             ),
-            margin: EdgeInsets.only(left: 20, top: 10,right: 10),
-            width: 30,
-            height: 30,
+            padding: EdgeInsets.all(6),
+            margin: EdgeInsets.only(left: 20, top: 0,right: 10),
           ),
-          Expanded(
+         Expanded(
+          child: Container(
+            child:Text('')
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.only(top: 6,right:10),
             child: Container(
               child: Text(
-                user,
+                time,
                 style: TextStyle(color: Colors.grey)
               ),
-              margin: EdgeInsets.only(top: 10),
             )
-          ),
-          Expanded(
-            flex: 1,
-            child: Container(
-              child: Text(
-                '17人参与',
-                textAlign: TextAlign.right,
-                style: TextStyle(color: Colors.grey)
-              ),
-              margin: EdgeInsets.only(top: 10,right: 20),
-            )
-          ),
+          )
         ],
     );
   }
@@ -239,5 +228,7 @@ class TimelineState extends State<Timeline>  with AutomaticKeepAliveClientMixin{
       isPerformingRequest = false;
     });
   }
+  @override
+  bool get wantKeepAlive => true;
 }
 

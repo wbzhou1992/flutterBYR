@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutterdemo/model/topten.dart';
 import 'package:flutterdemo/api/API.dart';
 import 'package:flutterdemo/api/mock_request.dart';
 import 'package:flutterdemo/pages/article_detial.dart';
@@ -14,8 +13,7 @@ class ToptenList  extends StatefulWidget{
 
 class ToptenListState extends State<ToptenList>  with AutomaticKeepAliveClientMixin{
   var lists = [];
-  @override
-  bool get wantKeepAlive => true;
+
   @override
   void initState() {
     super.initState();
@@ -116,12 +114,12 @@ class ToptenListState extends State<ToptenList>  with AutomaticKeepAliveClientMi
     var content = article['content'].replaceAll(RegExp(r'\n|-|\[b\]|\[/b\]'),'');
     var hasAttachment = (article['attachment'] == null || article['attachment'] == '') ? false : true;
     var attachment = hasAttachment ? 'https://bbs.byr.cn' + article['attachment'] : '';
-    return Container(
+    return Padding(
       padding: EdgeInsets.only(left: 20,right: 20,bottom:20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Container(
+          Padding(
             child: Text(
               title,
               textAlign: TextAlign.left,
@@ -134,7 +132,7 @@ class ToptenListState extends State<ToptenList>  with AutomaticKeepAliveClientMi
               overflow: TextOverflow.ellipsis,
               maxLines: 1,
             ),
-            margin: EdgeInsets.only(bottom: 14,top:6),
+            padding: EdgeInsets.only(bottom: 14,top:6),
           ),
           hasAttachment ? _getImage(content, attachment) : _getText(content)
         ],
@@ -157,7 +155,7 @@ class ToptenListState extends State<ToptenList>  with AutomaticKeepAliveClientMi
           ),
         ),
         Expanded(
-          child: Container(
+          child: Padding(
             padding: EdgeInsets.only(right: 8.0),
             child: _getText(content)
           )
@@ -185,5 +183,7 @@ class ToptenListState extends State<ToptenList>  with AutomaticKeepAliveClientMi
       lists = resultList;
     });
   }
+  @override
+  bool get wantKeepAlive => true;
 }
 
