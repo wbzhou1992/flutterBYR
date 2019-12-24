@@ -40,6 +40,7 @@ Data _$DataFromJson(Map<String, dynamic> json) {
     json['board_name'] as String,
     json['board_description'] as String,
     json['board'] as String,
+    json['attachment'] as String,
   );
 }
 
@@ -59,6 +60,7 @@ Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
       'board_name': instance.boardName,
       'board_description': instance.boardDescription,
       'board': instance.board,
+      'attachment': instance.attachment,
     };
 
 User _$UserFromJson(Map<String, dynamic> json) {

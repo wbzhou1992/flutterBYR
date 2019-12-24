@@ -11,7 +11,7 @@ Article _$ArticleFromJson(Map<String, dynamic> json) {
     json['success'] as bool,
     json['data'] == null
         ? null
-        : Article.fromJson(json['data'] as Map<String, dynamic>),
+        : ArticleData.fromJson(json['data'] as Map<String, dynamic>),
   );
 }
 
@@ -20,8 +20,8 @@ Map<String, dynamic> _$ArticleToJson(Article instance) => <String, dynamic>{
       'data': instance.data,
     };
 
-Postdetail _$PostdetailFromJson(Map<String, dynamic> json) {
-  return Postdetail(
+ArticleData _$ArticleDataFromJson(Map<String, dynamic> json) {
+  return ArticleData(
     json['gid'] as int,
     json['anony'] as bool,
     json['reid'] as int,
@@ -29,14 +29,14 @@ Postdetail _$PostdetailFromJson(Map<String, dynamic> json) {
     json['title'] as String,
     json['board'] == null
         ? null
-        : Board.fromJson(json['board'] as Map<String, dynamic>),
+        : ArticleBoard.fromJson(json['board'] as Map<String, dynamic>),
     (json['articles'] as List)
         ?.map((e) =>
             e == null ? null : Articles.fromJson(e as Map<String, dynamic>))
         ?.toList(),
     json['head'] == null
         ? null
-        : Head.fromJson(json['head'] as Map<String, dynamic>),
+        : ArticleHead.fromJson(json['head'] as Map<String, dynamic>),
     (json['popularReplies'] as List)
         ?.map((e) => e == null
             ? null
@@ -48,7 +48,7 @@ Postdetail _$PostdetailFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$PostdetailToJson(Postdetail instance) =>
+Map<String, dynamic> _$ArticleDataToJson(ArticleData instance) =>
     <String, dynamic>{
       'gid': instance.gid,
       'anony': instance.anony,
@@ -62,8 +62,8 @@ Map<String, dynamic> _$PostdetailToJson(Postdetail instance) =>
       'pagination': instance.pagination,
     };
 
-Board _$BoardFromJson(Map<String, dynamic> json) {
-  return Board(
+ArticleBoard _$ArticleBoardFromJson(Map<String, dynamic> json) {
+  return ArticleBoard(
     json['name'] as String,
     json['manager'] as String,
     json['description'] as String,
@@ -73,7 +73,8 @@ Board _$BoardFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$BoardToJson(Board instance) => <String, dynamic>{
+Map<String, dynamic> _$ArticleBoardToJson(ArticleBoard instance) =>
+    <String, dynamic>{
       'name': instance.name,
       'manager': instance.manager,
       'description': instance.description,
@@ -97,7 +98,7 @@ Articles _$ArticlesFromJson(Map<String, dynamic> json) {
     json['votedown_min'] as int,
     json['poster'] == null
         ? null
-        : Poster.fromJson(json['poster'] as Map<String, dynamic>),
+        : ArticlePoster.fromJson(json['poster'] as Map<String, dynamic>),
   );
 }
 
@@ -116,8 +117,8 @@ Map<String, dynamic> _$ArticlesToJson(Articles instance) => <String, dynamic>{
       'poster': instance.poster,
     };
 
-Poster _$PosterFromJson(Map<String, dynamic> json) {
-  return Poster(
+ArticlePoster _$ArticlePosterFromJson(Map<String, dynamic> json) {
+  return ArticlePoster(
     json['id'] as String,
     json['user_name'] as String,
     json['face_url'] as String,
@@ -144,7 +145,8 @@ Poster _$PosterFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$PosterToJson(Poster instance) => <String, dynamic>{
+Map<String, dynamic> _$ArticlePosterToJson(ArticlePoster instance) =>
+    <String, dynamic>{
       'id': instance.id,
       'user_name': instance.userName,
       'face_url': instance.faceUrl,
@@ -170,8 +172,8 @@ Map<String, dynamic> _$PosterToJson(Poster instance) => <String, dynamic>{
       'is_fan': instance.isFan,
     };
 
-Head _$HeadFromJson(Map<String, dynamic> json) {
-  return Head(
+ArticleHead _$ArticleHeadFromJson(Map<String, dynamic> json) {
+  return ArticleHead(
     json['id'] as int,
     json['time'] as String,
     json['voted'] as bool,
@@ -184,7 +186,8 @@ Head _$HeadFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$HeadToJson(Head instance) => <String, dynamic>{
+Map<String, dynamic> _$ArticleHeadToJson(ArticleHead instance) =>
+    <String, dynamic>{
       'id': instance.id,
       'time': instance.time,
       'voted': instance.voted,
@@ -262,7 +265,7 @@ PopularReplies _$PopularRepliesFromJson(Map<String, dynamic> json) {
     json['voteddown'] as bool,
     json['poster'] == null
         ? null
-        : PopularPoster.fromJson(json['poster'] as Map<String, dynamic>),
+        : ReplyPoster.fromJson(json['poster'] as Map<String, dynamic>),
   );
 }
 
@@ -280,8 +283,8 @@ Map<String, dynamic> _$PopularRepliesToJson(PopularReplies instance) =>
       'poster': instance.poster,
     };
 
-PopularPoster _$PopularPosterFromJson(Map<String, dynamic> json) {
-  return PopularPoster(
+ReplyPoster _$ReplyPosterFromJson(Map<String, dynamic> json) {
+  return ReplyPoster(
     json['id'] as String,
     json['user_name'] as String,
     json['face_url'] as String,
@@ -308,7 +311,7 @@ PopularPoster _$PopularPosterFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$PopularPosterToJson(PopularPoster instance) =>
+Map<String, dynamic> _$ReplyPosterToJson(ReplyPoster instance) =>
     <String, dynamic>{
       'id': instance.id,
       'user_name': instance.userName,

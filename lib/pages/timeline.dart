@@ -47,6 +47,7 @@ class TimelineState extends State<Timeline>  with AutomaticKeepAliveClientMixin{
       controller: _scrollController,
       itemBuilder: (BuildContext context, int index){
         var bean = lists[index];
+
         if(index == lists.length-1) {
           return _buildProgressIndicator();
         } else {
@@ -56,7 +57,7 @@ class TimelineState extends State<Timeline>  with AutomaticKeepAliveClientMixin{
                 context,
                 MaterialPageRoute(
                   builder: (context) {
-                    return ArticleDetail(userName:"Li peng",colorIndex: index);
+                    return ArticleDetail(boardName:bean['board_name'], id:bean['id'], colorIndex: index);
                   }
                 )
               );
@@ -84,7 +85,6 @@ class TimelineState extends State<Timeline>  with AutomaticKeepAliveClientMixin{
         child: Opacity(
           opacity: isPerformingRequest ? 0.0 : 1.0,
           child: CircularProgressIndicator(
-            value: 0.3,
             strokeWidth: 4.0,
             backgroundColor: Color(0xffff),
             valueColor: new AlwaysStoppedAnimation<Color>(Colors.blue),

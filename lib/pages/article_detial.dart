@@ -7,10 +7,11 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:html2md/html2md.dart' as html2md;
 
 class ArticleDetail extends StatefulWidget {
-  final String userName;
+  final int id;
+  final String boardName;
   final int colorIndex;
 
-  ArticleDetail({Key key, this.userName, this.colorIndex}) : super(key: key);
+  ArticleDetail({Key key, this.boardName, this.id, this.colorIndex}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => ArticleDetailState();

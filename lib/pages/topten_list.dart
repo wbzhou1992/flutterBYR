@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutterdemo/api/API.dart';
 import 'package:flutterdemo/api/mock_request.dart';
+import 'package:flutterdemo/api/http_request.dart';
 import 'package:flutterdemo/pages/article_detial.dart';
 
 class ToptenList  extends StatefulWidget{
@@ -10,6 +11,7 @@ class ToptenList  extends StatefulWidget{
     return ToptenListState();
   }
 }
+final API _api = API();
 
 class ToptenListState extends State<ToptenList>  with AutomaticKeepAliveClientMixin{
   var lists = [];
@@ -17,7 +19,13 @@ class ToptenListState extends State<ToptenList>  with AutomaticKeepAliveClientMi
   @override
   void initState() {
     super.initState();
-    requestAPI();
+    // requestAPI();
+    _api.getTopten((result) {
+      var resultList = result;
+      setState(() {
+        lists = resultList;
+      });
+    });
   }
   @override
   Widget build(BuildContext context) {
@@ -26,7 +34,7 @@ class ToptenListState extends State<ToptenList>  with AutomaticKeepAliveClientMi
         onRefresh: requestAPI,
         displacement: 20,
         backgroundColor: Colors.white,
-        child: _getListView()
+        child: lists.length == 0 ? _buildProgressIndicator() : _getListView()
       ),
     );
   }
@@ -43,7 +51,7 @@ class ToptenListState extends State<ToptenList>  with AutomaticKeepAliveClientMi
               context,
               MaterialPageRoute(
                 builder: (context) {
-                  return ArticleDetail(userName:"Li peng",colorIndex: index);
+                  return ArticleDetail(boardName: bean.boardName, id:bean.id, colorIndex: index);
                 }
               )
             );
@@ -63,9 +71,24 @@ class ToptenListState extends State<ToptenList>  with AutomaticKeepAliveClientMi
       }
     );
   }
+  Widget _buildProgressIndicator() {
+    return Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: Center(
+        child: Opacity(
+          opacity: 1.0,
+          child: CircularProgressIndicator(
+            strokeWidth: 4.0,
+            backgroundColor: Color(0xffff),
+            valueColor: new AlwaysStoppedAnimation<Color>(Colors.blue),
+          ),
+        ),
+      ),
+    );
+  }
   Widget _getUsesrView(var no, var article) {
-    var board = article['board'].substring(0,1);
-    var user = article['user']['id'];
+    var board = article.board.substring(0,1);
+    var user = article.user.id;
     var colorList = [Colors.green[400],Colors.blue[400],Colors.lightGreen,Colors.red[400],Colors.grey[400],Colors.pink[400],Colors.brown[400],Colors.blueGrey[400],Colors.orange[400],Colors.red[100],Colors.indigo];
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -110,10 +133,10 @@ class ToptenListState extends State<ToptenList>  with AutomaticKeepAliveClientMi
   }
   
   Widget _getContentView(var article) {
-    var title = article['title'];
-    var content = article['content'].replaceAll(RegExp(r'\n|-|\[b\]|\[/b\]'),'');
-    var hasAttachment = (article['attachment'] == null || article['attachment'] == '') ? false : true;
-    var attachment = hasAttachment ? 'https://bbs.byr.cn' + article['attachment'] : '';
+    var title = article.title;
+    var content = article.content.replaceAll(RegExp(r'\n|-|\[b\]|\[/b\]'),'');
+    var hasAttachment = (article.attachment == null || article.attachment == '') ? false : true;
+    var attachment = hasAttachment ? 'https://bbs.byr.cn' + article.attachment : '';
     return Padding(
       padding: EdgeInsets.only(left: 20,right: 20,bottom:20),
       child: Column(

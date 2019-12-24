@@ -21,7 +21,7 @@ class MockRequest {
   }
 
   Map<String, String> map = {
-    API.TOP_10: 'top250',
+    API.TOP_10: 'top10',
     API.ARTICLE: 'article',
     API.TIMELINE: 'timeline',
     API.BOARD: 'board',

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutterdemo/api/http_request.dart';
 import 'package:flutterdemo/model/topten.dart';
 import 'package:flutterdemo/model/article.dart';
+import 'package:flutterdemo/model/comment.dart';
 
 typedef RequestCallBack<T> = void Function(T value);
 
@@ -14,12 +15,12 @@ class API {
   //版面
   static const String BLOCK = BASE_URL+'/home/fav/0.json';
   //文章详情
-  static const String ARTICLE = BASE_URL+'/n/b/article/Friends/1947923.json';
+  static const String ARTICLE = BASE_URL+'/article/';
   //版面
-  static const String BOARD = BASE_URL+'/n/b/home/fav/0.json';
-  static const String BANNER = BASE_URL+'/n/b/banner.json';
+  static const String BOARD = BASE_URL+'/home/fav/0.json';
+  static const String BANNER = BASE_URL+'/banner.json';
   //banner
-  static const String BOARDS = BASE_URL+'/n/b/section.json';
+  static const String BOARDS = BASE_URL+'/section.json';
 
   var _request = HttpRequest.getInstance();
 
@@ -34,9 +35,17 @@ class API {
     requestCallBack(list);
   }
   void getArticleDetail(RequestCallBack requestCallBack, {var page, String path}) async{
-    final result = await _query(ARTICLE + '$path?page=$page');
-    Article bean = Article.fromJson(result);
-    Article list = bean.data;
+    final result = await _query(ARTICLE + '$path.json?page=$page');
+    var bean = Article.fromJson(result);
+    ArticleData list = bean.data;
+    print('Postdetail $list');
+    requestCallBack(list);
+  }
+  void getComments(RequestCallBack requestCallBack, {var page, String path}) async{
+    final result = await _query(ARTICLE + '$path.json?page=$page');
+    var bean = Comment.fromJson(result);
+    CommentData list = bean.data;
+    print('Commentdata $list');
     requestCallBack(list);
   }
 }

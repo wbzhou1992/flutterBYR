@@ -10,7 +10,7 @@ part 'article.g.dart';
   bool success;
 
   @JsonKey(name: 'data')
-  Article data;
+  ArticleData data;
 
   Article(this.success,this.data,);
 
@@ -22,7 +22,7 @@ part 'article.g.dart';
 
   
 @JsonSerializable()
-  class Postdetail extends Object {
+  class ArticleData extends Object {
 
   @JsonKey(name: 'gid')
   int gid;
@@ -40,13 +40,13 @@ part 'article.g.dart';
   String title;
 
   @JsonKey(name: 'board')
-  Board board;
+  ArticleBoard board;
 
   @JsonKey(name: 'articles')
   List<Articles> articles;
 
   @JsonKey(name: 'head')
-  Head head;
+  ArticleHead head;
 
   @JsonKey(name: 'popularReplies')
   List<PopularReplies> popularReplies;
@@ -54,17 +54,17 @@ part 'article.g.dart';
   @JsonKey(name: 'pagination')
   Pagination pagination;
 
-  Postdetail(this.gid,this.anony,this.reid,this.time,this.title,this.board,this.articles,this.head,this.popularReplies,this.pagination,);
+  ArticleData(this.gid,this.anony,this.reid,this.time,this.title,this.board,this.articles,this.head,this.popularReplies,this.pagination,);
 
-  factory Postdetail.fromJson(Map<String, dynamic> srcJson) => _$PostdetailFromJson(srcJson);
+  factory ArticleData.fromJson(Map<String, dynamic> srcJson) => _$ArticleDataFromJson(srcJson);
 
-  Map<String, dynamic> toJson() => _$PostdetailToJson(this);
+  Map<String, dynamic> toJson() => _$ArticleDataToJson(this);
 
 }
 
   
 @JsonSerializable()
-  class Board extends Object {
+  class ArticleBoard extends Object {
 
   @JsonKey(name: 'name')
   String name;
@@ -84,11 +84,11 @@ part 'article.g.dart';
   @JsonKey(name: 'threads_today_count')
   int threadsTodayCount;
 
-  Board(this.name,this.manager,this.description,this.section,this.isFavorite,this.threadsTodayCount,);
+  ArticleBoard(this.name,this.manager,this.description,this.section,this.isFavorite,this.threadsTodayCount,);
 
-  factory Board.fromJson(Map<String, dynamic> srcJson) => _$BoardFromJson(srcJson);
+  factory ArticleBoard.fromJson(Map<String, dynamic> srcJson) => _$ArticleBoardFromJson(srcJson);
 
-  Map<String, dynamic> toJson() => _$BoardToJson(this);
+  Map<String, dynamic> toJson() => _$ArticleBoardToJson(this);
 
 }
 
@@ -130,7 +130,7 @@ part 'article.g.dart';
   int votedownMin;
 
   @JsonKey(name: 'poster')
-  Poster poster;
+  ArticlePoster poster;
 
   Articles(this.id,this.op,this.time,this.pos,this.content,this.subject,this.voted,this.voteupCount,this.voteddown,this.votedownCount,this.votedownMin,this.poster,);
 
@@ -142,7 +142,7 @@ part 'article.g.dart';
 
   
 @JsonSerializable()
-  class Poster extends Object {
+  class ArticlePoster extends Object {
 
   @JsonKey(name: 'id')
   String id;
@@ -213,17 +213,17 @@ part 'article.g.dart';
   @JsonKey(name: 'is_fan')
   bool isFan;
 
-  Poster(this.id,this.userName,this.faceUrl,this.faceWidth,this.faceHeight,this.gender,this.astro,this.life,this.qq,this.msn,this.homePage,this.level,this.isOnline,this.postCount,this.lastLoginTime,this.lastLoginIp,this.isHide,this.isRegister,this.score,this.followNum,this.fansNum,this.isFollow,this.isFan,);
+  ArticlePoster(this.id,this.userName,this.faceUrl,this.faceWidth,this.faceHeight,this.gender,this.astro,this.life,this.qq,this.msn,this.homePage,this.level,this.isOnline,this.postCount,this.lastLoginTime,this.lastLoginIp,this.isHide,this.isRegister,this.score,this.followNum,this.fansNum,this.isFollow,this.isFan,);
 
-  factory Poster.fromJson(Map<String, dynamic> srcJson) => _$PosterFromJson(srcJson);
+  factory ArticlePoster.fromJson(Map<String, dynamic> srcJson) => _$ArticlePosterFromJson(srcJson);
 
-  Map<String, dynamic> toJson() => _$PosterToJson(this);
+  Map<String, dynamic> toJson() => _$ArticlePosterToJson(this);
 
 }
 
   
 @JsonSerializable()
-  class Head extends Object {
+  class ArticleHead extends Object {
 
   @JsonKey(name: 'id')
   int id;
@@ -246,11 +246,11 @@ part 'article.g.dart';
   @JsonKey(name: 'poster')
   HeadPoster poster;
 
-  Head(this.id,this.time,this.voted,this.voteddown,this.voteupCount,this.votedownCount,this.poster,);
+  ArticleHead(this.id,this.time,this.voted,this.voteddown,this.voteupCount,this.votedownCount,this.poster,);
 
-  factory Head.fromJson(Map<String, dynamic> srcJson) => _$HeadFromJson(srcJson);
+  factory ArticleHead.fromJson(Map<String, dynamic> srcJson) => _$ArticleHeadFromJson(srcJson);
 
-  Map<String, dynamic> toJson() => _$HeadToJson(this);
+  Map<String, dynamic> toJson() => _$ArticleHeadToJson(this);
 
 }
 
@@ -367,7 +367,7 @@ part 'article.g.dart';
   bool voteddown;
 
   @JsonKey(name: 'poster')
-  PopularPoster poster;
+  ReplyPoster poster;
 
   PopularReplies(this.content,this.time,this.pos,this.id,this.flag,this.voteupCount,this.votedownCount,this.voted,this.voteddown,this.poster,);
 
@@ -379,7 +379,7 @@ part 'article.g.dart';
 
   
 @JsonSerializable()
-  class PopularPoster extends Object {
+  class ReplyPoster extends Object {
 
   @JsonKey(name: 'id')
   String id;
@@ -450,11 +450,11 @@ part 'article.g.dart';
   @JsonKey(name: 'is_fan')
   bool isFan;
 
-  PopularPoster(this.id,this.userName,this.faceUrl,this.faceWidth,this.faceHeight,this.gender,this.astro,this.life,this.qq,this.msn,this.homePage,this.level,this.isOnline,this.postCount,this.lastLoginTime,this.lastLoginIp,this.isHide,this.isRegister,this.score,this.followNum,this.fansNum,this.isFollow,this.isFan,);
+  ReplyPoster(this.id,this.userName,this.faceUrl,this.faceWidth,this.faceHeight,this.gender,this.astro,this.life,this.qq,this.msn,this.homePage,this.level,this.isOnline,this.postCount,this.lastLoginTime,this.lastLoginIp,this.isHide,this.isRegister,this.score,this.followNum,this.fansNum,this.isFollow,this.isFan,);
 
-  factory PopularPoster.fromJson(Map<String, dynamic> srcJson) => _$PopularPosterFromJson(srcJson);
+  factory ReplyPoster.fromJson(Map<String, dynamic> srcJson) => _$ReplyPosterFromJson(srcJson);
 
-  Map<String, dynamic> toJson() => _$PopularPosterToJson(this);
+  Map<String, dynamic> toJson() => _$ReplyPosterToJson(this);
 
 }
 

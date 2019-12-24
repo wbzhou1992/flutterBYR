@@ -69,7 +69,10 @@ part 'topten.g.dart';
   @JsonKey(name: 'board')
   String board;
 
-  Data(this.id,this.groupId,this.replyId,this.flag,this.position,this.isTop,this.isSubject,this.isAdmin,this.postTime,this.title,this.content,this.user,this.boardName,this.boardDescription,this.board,);
+  @JsonKey(name: 'attachment')
+  String attachment;
+
+  Data(this.id,this.groupId,this.replyId,this.flag,this.position,this.isTop,this.isSubject,this.isAdmin,this.postTime,this.title,this.content,this.user,this.boardName,this.boardDescription,this.board,this.attachment);
 
   factory Data.fromJson(Map<String, dynamic> srcJson) => _$DataFromJson(srcJson);
 
