@@ -1,0 +1,29 @@
+{
+    "success": true,
+    "data": {
+        "id": "fyzebo",
+        "user_name": "【意涵团】风雨泽波||芦柑||八闽大地",
+        "face_url": "https://bbs.byr.cn/uploadFace/F/fyzebo.4803.jpg",
+        "face_width": 120,
+        "face_height": 120,
+        "gender": "f",
+        "astro": "巨蟹座",
+        "life": 666,
+        "qq": "",
+        "msn": "",
+        "home_page": "",
+        "level": "用户",
+        "is_online": true,
+        "post_count": 1342,
+        "last_login_time": 1577173873,
+        "last_login_ip": "183.42.5.*",
+        "is_hide": false,
+        "is_register": true,
+        "score": 24566,
+        "follow_num": 0,
+        "fans_num": 5,
+        "is_follow": false,
+        "is_fan": false,
+        "status": "目前在站上，状态如下：\n<span class='blue'>Web浏览</span> <span class='blue'>阅读文章</span> "
+    }
+}

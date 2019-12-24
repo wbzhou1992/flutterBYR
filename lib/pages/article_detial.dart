@@ -29,7 +29,9 @@ class ArticleDetailState extends State<ArticleDetail> with AutomaticKeepAliveCli
   ScrollController _scrollController = ScrollController();
   bool isPerformingRequest = false;
   final colorList = [Colors.green[400],Colors.blue[400],Colors.lightGreen,Colors.red[400],Colors.indigo,Colors.pink[400],Colors.brown[400],Colors.blueGrey[400],Colors.orange[400],Colors.red[100]];
-  
+  FocusNode _commentFocus = FocusNode();
+  TextEditingController _controller =TextEditingController();
+
   @override
   void initState(){
     super.initState();
@@ -64,9 +66,71 @@ class ArticleDetailState extends State<ArticleDetail> with AutomaticKeepAliveCli
       ),
       title: Text("阅读文章"),
       actions: <Widget>[
-        IconButton(icon: Icon(Icons.star_border,color: Colors.white,)),
-        IconButton(icon: Icon(Icons.share,color: Colors.white,)),
-        IconButton(icon: Icon(Icons.more_vert,color: Colors.white,)),
+        IconButton(
+          icon: Icon(Icons.star_border,color: Colors.white),
+          onPressed: () {
+            showDialog<Null>(
+              context: context,
+              barrierDismissible: true,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  backgroundColor: Colors.grey[200],
+                  content: Text('确定收录此文章吗？'),
+                  contentPadding: const EdgeInsets.only(left:20,top:20,bottom:0),
+                  actions: <Widget>[
+                    FlatButton(
+                      child: Text('取消',style: TextStyle(color:Colors.black)),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                    FlatButton(
+                      child: Text('确定'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                );
+              }
+            );
+          }
+        ),
+        IconButton(
+          icon: Icon(Icons.share,color: Colors.white),
+          onPressed: () {
+            showModalBottomSheet(
+              context: context,
+              builder: (BuildContext context) {
+                return _showShare(context);
+            });
+          }
+        ),
+        PopupMenuButton<String>(
+          onSelected: (String result) { 
+            setState(() { 
+              print(result); 
+          });
+          },
+          itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+            PopupMenuItem(
+              height:30,
+              child: Padding(
+                padding: const EdgeInsets.only(left:2,right:20,bottom:20),
+                child: Text('返回版面'),
+              ),
+              value: 'return',
+            ),
+            PopupMenuItem(
+              height:30,
+              child: Padding(
+                padding: const EdgeInsets.only(left:2,right:20),
+                child: Text('翻页'),
+              ),
+              value: 'page',
+            ),
+          ],
+        )
       ],
       backgroundColor: colorList[colorIndex],
     );
@@ -134,6 +198,8 @@ class ArticleDetailState extends State<ArticleDetail> with AutomaticKeepAliveCli
               child: Container(
                 height:36,
                 child:TextField(
+                  controller: _controller,
+                  focusNode: _commentFocus,
                   style: TextStyle(height:1.5),
                   decoration: InputDecoration(
                     filled: true,
@@ -236,6 +302,7 @@ class ArticleDetailState extends State<ArticleDetail> with AutomaticKeepAliveCli
     );
   }
   Widget _getUserDetail(var padding,var user) {
+    var isDown = int.parse(user['thumbUp']) >= int.parse(user['thumbDown']);
     return Padding(
       padding: EdgeInsets.all(padding),
       child: Row(
@@ -283,7 +350,7 @@ class ArticleDetailState extends State<ArticleDetail> with AutomaticKeepAliveCli
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Text(
-                  user['thumbUp'],
+                  isDown ? user['thumbUp'] : user['thumbDown'],
                   style: TextStyle(color: Colors.grey,fontSize:13)
                 ),
                 Container(
@@ -292,7 +359,7 @@ class ArticleDetailState extends State<ArticleDetail> with AutomaticKeepAliveCli
                   child: IconButton(
                     padding:const EdgeInsets.only(left:1.0,bottom: 2.0),
                     icon: Icon(
-                      IconData(0xe618, fontFamily: 'MyIcons'),
+                      isDown ? IconData(0xe618, fontFamily: 'MyIcons') : IconData(0xe617, fontFamily: 'MyIcons'),
                       size: 16,
                       color: Colors.grey
                     ),
@@ -300,8 +367,9 @@ class ArticleDetailState extends State<ArticleDetail> with AutomaticKeepAliveCli
                       showModalBottomSheet(
                         context: context,
                         builder: (BuildContext context) {
-                          return _showNomalWidList(context);
-                        });
+                          return _showNomalWidList(context,user);
+                        }
+                      );
                     },
                   ),
                 ),
@@ -313,7 +381,15 @@ class ArticleDetailState extends State<ArticleDetail> with AutomaticKeepAliveCli
                   width: 30,
                   child:IconButton(
                     padding: const EdgeInsets.only(right:8.0),
-                    icon: Icon(Icons.expand_more,color: Colors.grey,size:20)
+                    icon: Icon(Icons.expand_more,color: Colors.grey,size:20),
+                    onPressed: () {
+                      showModalBottomSheet(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return _showNomalWidList(context,user);
+                        }
+                      );
+                    },
                   ),
                 ),              
               ]
@@ -323,34 +399,42 @@ class ArticleDetailState extends State<ArticleDetail> with AutomaticKeepAliveCli
       )
     );
   }
-  Widget _showNomalWid(BuildContext context) {
-    var nameItems = ['选项一','选项二'];
-    return new Container(
-     height: 100.0,
-//      color: Colors.greenAccent,
-      child: new GridView.builder(
-        gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 4, mainAxisSpacing: 5.0, childAspectRatio: 1.0),
+   _showCollect(BuildContext context) {
+    
+  }
+  Widget _showShare(BuildContext context) {
+    List<String> nameItems = <String>['微博','微信','朋友圈','QQ','QQ空间'];
+    List<String> iconList = <String>['weibo.png', 'weixin.png', 'pyq.png', 'qq.png', 'qqzone.png'];
+    return Container(
+      height: 110.0,
+      padding: const EdgeInsets.only(right:10,left:10),
+      child: ListView.builder(
         itemBuilder: (BuildContext context, int index) {
-          return new Column(
-            children: <Widget>[
-              new Padding(
-                padding: EdgeInsets.fromLTRB(0.0, 6.0, 0.0, 6.0),
-                child: new Text('选项'),
-              ),
-              new Text(nameItems[index])
-            ],
+          return Padding(
+            padding: const EdgeInsets.only(right:10,left:20),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(bottom:10),
+                  child: Image.asset( 'assets/images/${iconList[index]}', width: 40.0, height: 40.0, fit: BoxFit.fill, ),
+                ),
+                Text(nameItems[index])
+              ],
+            )
           );
         },
+        scrollDirection: Axis.horizontal,
         itemCount: nameItems.length,
       ),
     );
   }
-  Widget _showNomalWidList(BuildContext context) {
-    var nameItems = ['赞 1','踩 0','取消'];
+  Widget _showNomalWidList(BuildContext context,var user) {
+    var nameItems = ["赞 ${user['thumbUp']}","踩 ${user['thumbDown']}","取消"];
+    _commentFocus.unfocus();
     return Container(
      height: 163.0,
-//      color: Colors.greenAccent,
       padding: const EdgeInsets.only(top:4.0),
       child: Column(
         children: [
@@ -358,11 +442,12 @@ class ArticleDetailState extends State<ArticleDetail> with AutomaticKeepAliveCli
             height: 40,
             child: FlatButton(
               onPressed: () {
-                showModalBottomSheet(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return _showNomalWid(context);
-                    });
+                setState((){});
+                // showModalBottomSheet(
+                //     context: context,
+                //     builder: (BuildContext context) {
+                //       return _showNomalWid(context);
+                    // });
               },
               child: Text(nameItems[0], style: TextStyle(fontSize:18)),
             ),
@@ -372,11 +457,11 @@ class ArticleDetailState extends State<ArticleDetail> with AutomaticKeepAliveCli
             height: 40,
             child: FlatButton(
               onPressed: () {
-                showModalBottomSheet(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return _showNomalWid(context);
-                    });
+                // showModalBottomSheet(
+                //     context: context,
+                //     builder: (BuildContext context) {
+                //       return _showNomalWid(context);
+                //     });
               },
               child: Text(nameItems[1], style: TextStyle(fontSize:18)),
             ),
@@ -386,11 +471,12 @@ class ArticleDetailState extends State<ArticleDetail> with AutomaticKeepAliveCli
             height: 40,
             child: FlatButton(
               onPressed: () {
-                showModalBottomSheet(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return _showNomalWid(context);
-                    });
+                // showModalBottomSheet(
+                //     context: context,
+                //     builder: (BuildContext context) {
+                //       return _showNomalWid(context);
+                //     });
+                Navigator.of(context).pop();
               },
               child: Text(nameItems[2], style: TextStyle(fontSize:18)),
             ),
@@ -402,7 +488,7 @@ class ArticleDetailState extends State<ArticleDetail> with AutomaticKeepAliveCli
   Widget _getArticelDetail(var context,var user) {
     var content = articleDetail[0]['content'];
     var title = articleAll['title'];
-    RegExp exp = new RegExp(r'(href|src)\=\"(/att[/|\w|\d]*)\"');
+    RegExp exp = RegExp(r'(href|src)\=\"(/att[/|\w|\d]*)\"');
     var con = content.replaceAllMapped(exp,(Match m){
       return '${m[1]}="https://bbs.byr.cn${m[2]}"';
     });
@@ -460,7 +546,7 @@ class ArticleDetailState extends State<ArticleDetail> with AutomaticKeepAliveCli
   Widget _getComment(var list) {
     return ListView.builder(
       shrinkWrap: true,
-      physics: new NeverScrollableScrollPhysics(),
+      physics: NeverScrollableScrollPhysics(),
       itemCount: list.length+1,
       itemBuilder: (BuildContext context, int index){
         if (index == list.length) {
@@ -480,7 +566,7 @@ class ArticleDetailState extends State<ArticleDetail> with AutomaticKeepAliveCli
           child: CircularProgressIndicator(
             strokeWidth: 4.0,
             backgroundColor: Color(0xffff),
-            valueColor: new AlwaysStoppedAnimation<Color>(Colors.blue),
+            valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
           ),
         ),
       ),
@@ -490,7 +576,7 @@ class ArticleDetailState extends State<ArticleDetail> with AutomaticKeepAliveCli
     var currentUser = list[index]['poster'];
     var current = list[index];
     var content = current['content'];
-    RegExp exp = new RegExp(r'(【 在(.*)的大作中提到: 】)');
+    RegExp exp = RegExp(r'(【 在(.*)的大作中提到: 】)');
     var conList = content.replaceAll(RegExp(r'<br/>|<br>|<br\s/>|-|<img(.*)?>|<href(.*)?>'),'').split(exp);
     conList[0] == '' ?  conList = ['图片'] : '';
     var quto = '';
@@ -562,7 +648,7 @@ class ArticleDetailState extends State<ArticleDetail> with AutomaticKeepAliveCli
   Widget _getPopularReplies(var list) {
     return ListView.builder(
       shrinkWrap: true,
-      physics: new NeverScrollableScrollPhysics(),
+      physics: NeverScrollableScrollPhysics(),
       itemCount: list.length,
       itemBuilder: (BuildContext context, int index){
         return decodeArticle(list,index);
@@ -653,7 +739,7 @@ class ArticleDetailState extends State<ArticleDetail> with AutomaticKeepAliveCli
         if (offsetFromBottom < edge) {
           _scrollController.animateTo(
             _scrollController.offset - (edge -offsetFromBottom),
-            duration: new Duration(milliseconds: 500),
+            duration: Duration(milliseconds: 500),
             curve: Curves.easeOut
           );
         }

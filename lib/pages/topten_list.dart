@@ -19,13 +19,13 @@ class ToptenListState extends State<ToptenList>  with AutomaticKeepAliveClientMi
   @override
   void initState() {
     super.initState();
-    // requestAPI();
-    _api.getTopten((result) {
-      var resultList = result;
-      setState(() {
-        lists = resultList;
-      });
-    });
+    requestAPI();
+    // _api.getTopten((result) {
+    //   var resultList = result;
+    //   setState(() {
+    //     lists = resultList;
+    //   });
+    // });
   }
   @override
   Widget build(BuildContext context) {
@@ -51,7 +51,7 @@ class ToptenListState extends State<ToptenList>  with AutomaticKeepAliveClientMi
               context,
               MaterialPageRoute(
                 builder: (context) {
-                  return ArticleDetail(boardName: bean.boardName, id:bean.id, colorIndex: index);
+                  return ArticleDetail(boardName: bean['board_name'], id:bean['id'], colorIndex: index);
                 }
               )
             );
@@ -87,8 +87,9 @@ class ToptenListState extends State<ToptenList>  with AutomaticKeepAliveClientMi
     );
   }
   Widget _getUsesrView(var no, var article) {
-    var board = article.board.substring(0,1);
-    var user = article.user.id;
+    var board = article['board'].substring(0,1);
+    var id = article['user']['id'];
+    var count = article['count'].toString();
     var colorList = [Colors.green[400],Colors.blue[400],Colors.lightGreen,Colors.red[400],Colors.grey[400],Colors.pink[400],Colors.brown[400],Colors.blueGrey[400],Colors.orange[400],Colors.red[100],Colors.indigo];
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -111,7 +112,7 @@ class ToptenListState extends State<ToptenList>  with AutomaticKeepAliveClientMi
           Expanded(
             child: Container(
               child: Text(
-                user,
+                id,
                 style: TextStyle(color: Colors.grey)
               ),
               margin: EdgeInsets.only(top: 10),
@@ -121,7 +122,7 @@ class ToptenListState extends State<ToptenList>  with AutomaticKeepAliveClientMi
             flex: 1,
             child: Container(
               child: Text(
-                '17人参与',
+                count + '人参与',
                 textAlign: TextAlign.right,
                 style: TextStyle(color: Colors.grey)
               ),
@@ -133,10 +134,10 @@ class ToptenListState extends State<ToptenList>  with AutomaticKeepAliveClientMi
   }
   
   Widget _getContentView(var article) {
-    var title = article.title;
-    var content = article.content.replaceAll(RegExp(r'\n|-|\[b\]|\[/b\]'),'');
-    var hasAttachment = (article.attachment == null || article.attachment == '') ? false : true;
-    var attachment = hasAttachment ? 'https://bbs.byr.cn' + article.attachment : '';
+    var title = article['title'];
+    var content = article['content'].replaceAll(RegExp(r'\n|-|\[b\]|\[/b\]'),'');
+    var hasAttachment = (article['attachment'] == null || article['attachment'] == '') ? false : true;
+    var attachment = hasAttachment ? 'https://bbs.byr.cn' + article['attachment'] : '';
     return Padding(
       padding: EdgeInsets.only(left: 20,right: 20,bottom:20),
       child: Column(
