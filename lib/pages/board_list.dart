@@ -46,6 +46,7 @@ class BoardListState extends State<BoardList>  with AutomaticKeepAliveClientMixi
   }
 
   Widget _getBody() {
+    if(lists.length == 0) return Text('');
     return ListView.separated(
       physics: const BouncingScrollPhysics(),
       padding: EdgeInsets.only(top:10,bottom:10),
@@ -94,7 +95,6 @@ class BoardListState extends State<BoardList>  with AutomaticKeepAliveClientMixi
     var _request = MockRequest();
     final Map result = await _request.get(API.BOARDS);
     var resultList = result['data']['boards'];
-    print('resultList $resultList');
     setState(() {
       lists = resultList;
     });

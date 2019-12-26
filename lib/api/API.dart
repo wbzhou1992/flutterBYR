@@ -22,7 +22,7 @@ class API {
   //banner
   static const String BOARDS = BASE_URL+'/section.json';
 
-  static const String USER = BASE_URL+'/section.json';
+  static const String USER = BASE_URL+'/user/query/fyzebo.json';
 
   var _request = HttpRequest.getInstance();
 

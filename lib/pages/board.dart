@@ -110,7 +110,6 @@ class BoardsectionState extends State<Boardsection> with AutomaticKeepAliveClien
     int i = 0;
     if(boards != null){
       boards.forEach((board){
-        print(board);
         var chip = Chip(
           avatar: Container(
             width: 46,
@@ -143,8 +142,6 @@ class BoardsectionState extends State<Boardsection> with AutomaticKeepAliveClien
     } else {
       _buildProgressIndicator();
     }
-    
-    print(chipList);
     return chipList;
   }
   Widget _buildProgressIndicator() {
@@ -171,7 +168,6 @@ class BoardsectionState extends State<Boardsection> with AutomaticKeepAliveClien
     setState(() {
       boards = boardData;
       banners = bannerData;
-      print('result $bannerData');
     });
   }
   @override
