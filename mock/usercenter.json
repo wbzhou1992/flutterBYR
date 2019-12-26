@@ -1,0 +1,29 @@
+{
+    "success": true,
+    "data": {
+        "id": "jiahaoPlus",
+        "user_name": "Plus",
+        "face_url": "https://bbs.byr.cn/uploadFace/J/jiahaoPlus.9549.jpg",
+        "face_width": 120,
+        "face_height": 120,
+        "gender": "m",
+        "astro": "双子座",
+        "life": 135,
+        "qq": "1843781563",
+        "msn": "",
+        "home_page": "jiahaoplus.com",
+        "level": "用户",
+        "is_online": false,
+        "post_count": 95,
+        "last_login_time": 1577343714,
+        "last_login_ip": "10.128.213.*",
+        "is_hide": false,
+        "is_register": true,
+        "score": 308,
+        "follow_num": 0,
+        "fans_num": 1,
+        "is_follow": false,
+        "is_fan": false,
+        "status": "目前不在站上"
+    }
+}

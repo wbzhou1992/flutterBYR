@@ -60,7 +60,14 @@ class HomePageState extends State<HomePage> with SingleTickerProviderStateMixin 
       title: Text('北邮人论坛'),
       actions: <Widget>[
         IconButton(icon: Icon(Icons.search), onPressed: _pushSaved),
-        IconButton(icon: Icon(Icons.message), onPressed: _pushSaved),
+        IconButton(
+          icon: Icon(
+            IconData(0xe630, fontFamily: 'MyIcons'),
+            size: 22,
+            color: Colors.white
+          ), 
+          onPressed: _pushSaved
+        ),
       ],
       backgroundColor: Colors.blue,
       bottom: PreferredSize(

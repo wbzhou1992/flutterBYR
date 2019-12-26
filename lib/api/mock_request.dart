@@ -26,7 +26,8 @@ class MockRequest {
     API.TIMELINE: 'timeline',
     API.BOARD: 'board',
     API.BANNER: 'banner',
-    API.BOARDS: 'boardlist'
+    API.BOARDS: 'boardlist',
+    API.USER: 'usercenter',
   };
 
   getJsonName(String action) {

@@ -3,6 +3,7 @@ import 'package:flutterdemo/model/article.dart';
 import 'package:flutterdemo/api/API.dart';
 import 'package:flutterdemo/api/mock_request.dart';
 import 'package:flutterdemo/widgets/my_webview.dart';
+import 'package:flutterdemo/pages/user_center.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:html2md/html2md.dart' as html2md;
 
@@ -164,12 +165,12 @@ class ArticleDetailState extends State<ArticleDetail> with AutomaticKeepAliveCli
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
-                      _getUserDetail(10.0,user),
+                      _getUserDetail(10.0,user,context),
                       _getArticelDetail(context, user),
                       _getCommentDivider(1),
-                      _getPopularReplies(popularReplies),
+                      _getPopularReplies(popularReplies,context),
                       _getCommentDivider(2),
-                      _getComment(commentList)
+                      _getComment(commentList,context)
                     ],
                   ),
               ),
@@ -301,24 +302,36 @@ class ArticleDetailState extends State<ArticleDetail> with AutomaticKeepAliveCli
       )
     );
   }
-  Widget _getUserDetail(var padding,var user) {
+  Widget _getUserDetail(var padding,var user,var context) {
     var isDown = int.parse(user['thumbUp']) >= int.parse(user['thumbDown']);
     return Padding(
       padding: EdgeInsets.all(padding),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          Container(
-            width: 40,
-            height: 40,
-            margin: EdgeInsets.only(right: 10),
-            decoration: BoxDecoration(
-              shape: BoxShape.rectangle,
-              borderRadius: BorderRadius.circular(20.0),
-              image: DecorationImage(
-                  image: NetworkImage(user['avatar']),
-                  fit: BoxFit.cover),
-            ),
+          GestureDetector(
+            onTap: (){
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return UserCenter(id: user['userName']);
+                   }
+                 )
+               );
+            },
+            child:  Container(
+              width: 40,
+              height: 40,
+              margin: EdgeInsets.only(right: 10),
+              decoration: BoxDecoration(
+                shape: BoxShape.rectangle,
+                borderRadius: BorderRadius.circular(20.0),
+                image: DecorationImage(
+                    image: NetworkImage(user['avatar']),
+                    fit: BoxFit.cover),
+              ),
+            )
           ),
           Expanded(
             child: Column(
@@ -359,7 +372,7 @@ class ArticleDetailState extends State<ArticleDetail> with AutomaticKeepAliveCli
                   child: IconButton(
                     padding:const EdgeInsets.only(left:1.0,bottom: 2.0),
                     icon: Icon(
-                      isDown ? IconData(0xe618, fontFamily: 'MyIcons') : IconData(0xe617, fontFamily: 'MyIcons'),
+                      isDown ? IconData(0xe619, fontFamily: 'MyIcons') : IconData(0xe618, fontFamily: 'MyIcons'),
                       size: 16,
                       color: Colors.grey
                     ),
@@ -543,7 +556,7 @@ class ArticleDetailState extends State<ArticleDetail> with AutomaticKeepAliveCli
     );
   }
   
-  Widget _getComment(var list) {
+  Widget _getComment(var list,var context) {
     return ListView.builder(
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
@@ -552,7 +565,7 @@ class ArticleDetailState extends State<ArticleDetail> with AutomaticKeepAliveCli
         if (index == list.length) {
           return _buildProgressIndicator();
         } else {
-          return decodeArticle(list,index);
+          return decodeArticle(list,index,context);
         }
       }
     );
@@ -572,7 +585,7 @@ class ArticleDetailState extends State<ArticleDetail> with AutomaticKeepAliveCli
       ),
     );
   }
-  Widget decodeArticle(List list, int index){
+  Widget decodeArticle(List list, int index,var context){
     var currentUser = list[index]['poster'];
     var current = list[index];
     var content = current['content'];
@@ -606,7 +619,7 @@ class ArticleDetailState extends State<ArticleDetail> with AutomaticKeepAliveCli
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              _getUserDetail(0.0,user),
+              _getUserDetail(0.0,user,context),
               _getCommentContent(user,conList,quto),
               Divider()
             ],
@@ -627,7 +640,7 @@ class ArticleDetailState extends State<ArticleDetail> with AutomaticKeepAliveCli
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              _getUserDetail(0.0,user),
+              _getUserDetail(0.0,user,context),
               Padding(
                 padding: EdgeInsets.only(left: 50),
                 child: Text(
@@ -645,13 +658,13 @@ class ArticleDetailState extends State<ArticleDetail> with AutomaticKeepAliveCli
       );
     }
   }
-  Widget _getPopularReplies(var list) {
+  Widget _getPopularReplies(var list,var context) {
     return ListView.builder(
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
       itemCount: list.length,
       itemBuilder: (BuildContext context, int index){
-        return decodeArticle(list,index);
+        return decodeArticle(list,index,context);
       }
     );
   }
