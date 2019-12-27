@@ -13,66 +13,68 @@ class MyTabBar extends StatefulWidget {
   }
 }
 
-class MyTabBarState extends State<MyTabBar> with SingleTickerProviderStateMixin {
+class MyTabBarState extends State<MyTabBar>
+    with SingleTickerProviderStateMixin {
   TabController _tabController;
-  
+
   @override
-  void initState(){
+  void initState() {
     super.initState();
     _tabController = TabController(vsync: this, length: 3);
   }
 
   @override
-  void dispose(){
+  void dispose() {
     _tabController.dispose();
     super.dispose();
   }
-  void _pushSaved() {
 
-  }
+  void _pushSaved() {}
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Builder(
-          builder: (BuildContext context) {
-            return IconButton(
-              icon: const Icon(Icons.menu),
-              onPressed: () { Scaffold.of(context).openDrawer(); },
-              tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
-            );
-          },
-        ),
-        title: Text('北邮人论坛'),
-        actions: <Widget>[
-          IconButton(icon: Icon(Icons.search), onPressed: _pushSaved),
-          IconButton(icon: Icon(Icons.message), onPressed: _pushSaved),
-        ],
-        backgroundColor: Colors.blue,
-        bottom: PreferredSize(
-          preferredSize: Size.fromHeight(48),
-          child: Material(
-            color: Colors.grey[200],
-            child: TabBar(
-              // indicator: ColorTabIndicator(Colors.black),//选中标签颜色
-              indicatorColor: Colors.blue,//选中下划线颜色,如果使用了indicator这里设置无效
-              controller: _tabController,
-              labelColor: Colors.black,
-              // unselectedLabelColor: Colors.yellow,
-              tabs: _tabs.map((item)=>Tab(text: item,)).toList(),
-            ),
+          leading: Builder(
+            builder: (BuildContext context) {
+              return IconButton(
+                icon: const Icon(Icons.menu),
+                onPressed: () {
+                  Scaffold.of(context).openDrawer();
+                },
+                tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+              );
+            },
           ),
-        )
-      ),
-      body: TabBarView(
-        controller: _tabController,
-        children: <Widget>[
-          Center(child: Timeline()),
-          Center(child: ToptenList()),
-          Center(child: Text('汽车')),
-        ]
-      ),
+          title: Text('北邮人论坛'),
+          actions: <Widget>[
+            IconButton(icon: Icon(Icons.search), onPressed: _pushSaved),
+            IconButton(icon: Icon(Icons.message), onPressed: _pushSaved),
+          ],
+          backgroundColor: Colors.blue,
+          bottom: PreferredSize(
+            preferredSize: Size.fromHeight(48),
+            child: Material(
+              color: Colors.grey[200],
+              child: TabBar(
+                // indicator: ColorTabIndicator(Colors.black),//选中标签颜色
+                indicatorColor: Colors.blue, //选中下划线颜色,如果使用了indicator这里设置无效
+                controller: _tabController,
+                labelColor: Colors.black,
+                // unselectedLabelColor: Colors.yellow,
+                tabs: _tabs
+                    .map((item) => Tab(
+                          text: item,
+                        ))
+                    .toList(),
+              ),
+            ),
+          )),
+      body: TabBarView(controller: _tabController, children: <Widget>[
+        Center(child: Timeline()),
+        Center(child: ToptenList()),
+        Center(child: Text('汽车')),
+      ]),
       floatingActionButton: FloatingActionButton(
         tooltip: 'Add', // used by assistive technologies
         child: Icon(Icons.add),

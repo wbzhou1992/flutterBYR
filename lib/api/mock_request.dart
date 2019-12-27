@@ -5,7 +5,6 @@ import 'dart:convert';
 
 ///模拟数据
 class MockRequest {
-
   Future<dynamic> get(String action, {Map params}) async {
     return MockRequest.mock(action: getJsonName(action), params: params);
   }
