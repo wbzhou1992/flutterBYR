@@ -3,7 +3,6 @@ import 'package:flutterdemo/model/timeline.dart';
 import 'package:flutterdemo/api/API.dart';
 import 'package:flutterdemo/api/mock_request.dart';
 import 'package:flutterdemo/pages/article_detial.dart';
-import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:intl/intl.dart';
 
 class Timeline  extends StatefulWidget{
@@ -15,105 +14,69 @@ class Timeline  extends StatefulWidget{
 }
 
 class TimelineState extends State<Timeline>  with AutomaticKeepAliveClientMixin{
-  List lists;
-  EasyRefreshController _controller;
-  ScrollController _scrollController;
-  String _updatedTime;
+  var lists = [];
+  ScrollController _scrollController = ScrollController();
+  bool isPerformingRequest = false;
+  
   @override
   void initState() {
     super.initState();
-    _controller = EasyRefreshController();
-    _scrollController = ScrollController();
-    lists = [];
     requestAPI();
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
+        _getMoreData();
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: EasyRefresh.custom(
-        enableControlFinishRefresh: true,
-        enableControlFinishLoad: true,
-        controller: _controller,
-        scrollController: _scrollController,
-        topBouncing: true,
-        bottomBouncing: true,
-        header: ClassicalHeader(
-          refreshText: '下拉刷新',
-          refreshingText: '正在刷新',
-          refreshReadyText: '释放立即刷新',
-          refreshedText: '刷新完成',
-          infoText: '上次更新 ${_updatedTime}',
-          enableInfiniteRefresh: false,
+      child: RefreshIndicator(
+          onRefresh: requestAPI,
+          displacement: 20,
+          backgroundColor: Colors.white,
+          child: _getListView()
         ),
-        footer: ClassicalFooter(
-          enableInfiniteLoad: true,
-          loadingText: '正在加载',
-          noMoreText: '没有更多了',
-          showInfo: false,
-        ),
-        onRefresh: () async {
-          var _request = MockRequest();
-          final Map result = await _request.get(API.TIMELINE);
-          var resultList = result['data']['article'];
-          setState(() {
-            lists = resultList;
-          });
-          _controller.resetLoadState();
-          _controller.finishRefresh();
-          _updatedTime = _getDateTime();
-        },
-        onLoad: () async {
-          var _request = MockRequest();
-          final Map result = await _request.get(API.TIMELINE);
-          var resultList = result['data']['article'];
-          setState(() {
-            lists.addAll(resultList);
-          });
-          _controller.finishLoad(noMore: lists.length >= 80);
-        },
-        slivers: <Widget>[
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (context, index) {
-                var bean = lists[index];
-                return _getListItem(bean, index);
-              },
-              childCount: lists.length,
-            ),
-          ),
-        ],
-      ),///
     );
   }
-  Widget _getListItem(var bean,int index){
-    return Column(
-      children: [
-        GestureDetector(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) {
-                  return ArticleDetail(boardName:'eee', id:11111, colorIndex: index);
-                }
-              )
-            );
-          },
-          child: Container(
-            color: Colors.transparent,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                _getBoard(index + 1,bean),
-                _getContentView(bean),
-                index != lists.length-1 ? Divider() : Text('')
-              ],
+
+  Widget _getListView() {
+    return ListView.builder(
+      physics: const BouncingScrollPhysics(),
+      itemCount: lists.length,
+      controller: _scrollController,
+      itemBuilder: (BuildContext context, int index){
+        var bean = lists[index];
+
+        if(index == lists.length-1) {
+          return _buildProgressIndicator();
+        } else {
+          return GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return ArticleDetail(boardName:bean['board_name'], id:bean['id'], colorIndex: index);
+                  }
+                )
+              );
+            },
+            child: Container(
+              color: Colors.transparent,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  _getBoard(index + 1,bean),
+                  _getContentView(bean),
+                  index != lists.length-1 ? Divider() : Text('')
+                ],
+              ),
             ),
-          ),
-        ),
-        index != lists.length-1 ? Divider() : Text('')
-      ]
+          );
+        }
+      }
     );
   }
   String _getDateTime(){
@@ -121,6 +84,21 @@ class TimelineState extends State<Timeline>  with AutomaticKeepAliveClientMixin{
     var formatter = new DateFormat('MM-dd HH:mm');
     String formatted = formatter.format(now);
     return formatted;
+  }
+   Widget _buildProgressIndicator() {
+    return Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: Center(
+        child: Opacity(
+          opacity: isPerformingRequest ? 0.0 : 1.0,
+          child: CircularProgressIndicator(
+            strokeWidth: 4.0,
+            backgroundColor: Color(0xffff),
+            valueColor: new AlwaysStoppedAnimation<Color>(Colors.blue),
+          ),
+        ),
+      ),
+    );
   }
   Widget _getBoard(var no, var article) {
     var board = article['board_description'];
@@ -132,33 +110,33 @@ class TimelineState extends State<Timeline>  with AutomaticKeepAliveClientMixin{
     return Row(
       children: [
         Container(
-          child: Text(
-            board,
-            style: TextStyle(color: Colors.white),
+            child:Text(
+              board,
+              style: TextStyle(color: Colors.white),
+            ),
+            decoration: BoxDecoration(
+                color: Colors.blue,
+                shape: BoxShape.rectangle,
+                borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10.0), bottomRight: Radius.circular(10.0)),
+            ),
+            padding: EdgeInsets.all(6),
+            margin: EdgeInsets.only(left: 20, top: 0,right: 10),
           ),
-          decoration: BoxDecoration(
-              color: Colors.blue,
-              shape: BoxShape.rectangle,
-              borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10.0), bottomRight: Radius.circular(10.0)),
-          ),
-          padding: EdgeInsets.all(6),
-          margin: EdgeInsets.only(left: 20, top: 0,right: 10),
-        ),
-        Expanded(
+         Expanded(
           child: Container(
             child:Text('')
           ),
         ),
         Padding(
           padding: EdgeInsets.only(top: 6,right:10),
-          child: Container(
-            child: Text(
-              formatted,
-              style: TextStyle(color: Colors.grey)
-            ),
+            child: Container(
+              child: Text(
+                formatted,
+                style: TextStyle(color: Colors.grey)
+              ),
+            )
           )
-        )
-      ]
+        ],
     );
   }
 
@@ -228,13 +206,36 @@ class TimelineState extends State<Timeline>  with AutomaticKeepAliveClientMixin{
       maxLines: 3, 
     );
   }
-
+  _getMoreData() async {
+    if (!isPerformingRequest) {
+      setState(() => isPerformingRequest = true);
+      var _request = MockRequest();
+      final Map result = await _request.get(API.TOP_10);
+      var newEntries = result['data'];
+      if (newEntries.isEmpty) {
+        double edge = 50.0;
+        double offsetFromBottom = _scrollController.position.maxScrollExtent - _scrollController.position.pixels;
+        if (offsetFromBottom < edge) {
+          _scrollController.animateTo(
+            _scrollController.offset - (edge -offsetFromBottom),
+            duration: new Duration(milliseconds: 500),
+            curve: Curves.easeOut
+          );
+        }
+      }
+      setState(() {
+        lists.addAll(newEntries);
+        isPerformingRequest = false;
+      });
+    }
+  }
   Future<Null> requestAPI() async {
     var _request = MockRequest();
     final Map result = await _request.get(API.TIMELINE);
     var resultList = result['data']['article'];
     setState(() {
-      lists.addAll(resultList);
+      lists = resultList;
+      isPerformingRequest = false;
     });
   }
   @override

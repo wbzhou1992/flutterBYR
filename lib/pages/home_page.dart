@@ -4,6 +4,7 @@ import 'package:flutterdemo/api/API.dart';
 import 'package:flutterdemo/pages/topten_list.dart';
 import 'package:flutterdemo/pages/timeline.dart';
 import 'package:flutterdemo/pages/board.dart';
+import 'package:flutterdemo/pages/protector.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -41,7 +42,16 @@ class HomePageState extends State<HomePage> with SingleTickerProviderStateMixin 
       floatingActionButton: FloatingActionButton(
         tooltip: 'Add',
         child: Icon(Icons.add),
-        onPressed: null,
+        onPressed: (){
+          Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              return Protector(id: 'wbzhou');
+             }
+           )
+          );
+        },
       ),
       backgroundColor: Colors.white,
     );
