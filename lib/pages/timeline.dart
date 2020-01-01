@@ -24,6 +24,7 @@ class TimelineState extends State<Timeline> with AutomaticKeepAliveClientMixin {
     super.initState();
     _controller = EasyRefreshController();
     _scrollController = ScrollController();
+    _updatedTime = _getDateTime();
     lists = [];
     requestAPI();
   }

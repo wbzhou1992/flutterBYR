@@ -50,12 +50,25 @@ class ToptenListState extends State<ToptenList>
           var bean = lists[index];
           return GestureDetector(
             onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return ArticleDetail(
+              Navigator.push(context, 
+                PageRouteBuilder(
+                  pageBuilder: (context, animation, secondaryAnimation) => 
+                  ArticleDetail(
                     boardName: bean['board_name'],
                     id: bean['id'],
-                    colorIndex: index);
-              }));
+                    colorIndex: index
+                  ),
+                  transitionsBuilder:(context, animation, secondaryAnimation, child) {
+                    var begin = Offset(1.0, 0.0);
+                    var end = Offset.zero;
+                    var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: Curves.ease));
+                    return SlideTransition(
+                      position: animation.drive(tween),
+                      child: child,
+                    );
+                  }
+                )
+              );
             },
             child: Container(
               color: Colors.transparent,

@@ -32,6 +32,9 @@ dependencies:
   flutter_swiper: ^1.1.6
   flutter_easyrefresh: ^2.0.8
   intl: ^0.16.0
+  permission_handler: ^4.0.0
+  path_provider: ^1.5.1
+  file_picker: ^1.4.3+2
 
 dev_dependencies:
   flutter_test:
