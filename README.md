@@ -18,7 +18,7 @@ A new Flutter project.
 
 |分享|回复|
 |:---:|:---:|
-|![](https://github.com/wbzhou1992/flutterBYR/blob/master/images/WechatIMG6.jpeg)|![](hhttps://github.com/wbzhou1992/flutterBYR/blob/master/images/WechatIMG7.jpeg)|
+|![](https://github.com/wbzhou1992/flutterBYR/blob/master/images/WechatIMG6.jpeg)|![](https://github.com/wbzhou1992/flutterBYR/blob/master/images/WechatIMG7.jpeg)|
 
 |详情页|时间线|
 |:---:|:---:|
