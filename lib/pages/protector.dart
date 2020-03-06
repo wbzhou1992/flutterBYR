@@ -229,7 +229,7 @@ class _ProtectorState extends State<Protector> {
                               decoration: TextDecoration.none,
                               fontFamily: 'PingFangSC-Regular,PingFang SC;')),
                       Image.asset('assets/images/vip.png',
-                          width: 23.0, height: 14.0, fit: BoxFit.fill),
+                          width: 14.0, height: 15.0, fit: BoxFit.fill),
                     ]),
                 Text('2020年3月30日到期',
                     style: TextStyle(
